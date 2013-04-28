@@ -11,7 +11,10 @@
 	if (!isCanLocalStorage) {
 		// 创建一个userData对象
 		var userData = document.getElementById('localStorage'),
-			box = document.body || document.getElementsByTagName("head")[0] || document.documentElement;
+			box = document.body || document.getElementsByTagName("head")[0] || document.documentElement,
+			expires = new Date();
+		expires.setDate(expires.getDate() + 365 * 10); // 过期时间为10年
+
 		// 创建userData
 		if (!userData || userData.length < 1) {
 			userData = document.createElement('input');
@@ -19,6 +22,7 @@
 			userData.setAttribute('id','localStorage');
 			userData.style.behavior = "url('#default#userData')";
 			userData.style.display = 'none';
+			userData.expires = expires.toUTCString();
 			box.appendChild(userData);
 		};
 
@@ -34,9 +38,14 @@
 		ieLocalStorage.removeItem = function (key) {
 			userData.load('djUserData');
 			userData.removeAttribute(key);
+			userData.save('djUserData');
 		};
 		ieLocalStorage.clear = function () {
-			
+			var expires = new Date();
+			expires.setDate(expires.getDate() - 10);
+			userData.load('djUserData');
+			userData.expires = expires.toUTCString();
+			userData.save('djUserData');
 		};
 
 		exports.localStorage = ieLocalStorage;
