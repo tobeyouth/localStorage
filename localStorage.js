@@ -42,13 +42,12 @@
 		};
 		ieLocalStorage.clear = function () {
 			var expires = new Date();
-			expires.setDate(expires.getDate() - 10);
+			expires.setDate(expires.getDate() - 1);
 			userData.load('djUserData');
 			userData.expires = expires.toUTCString();
 			userData.save('djUserData');
 		};
 
 		exports.localStorage = ieLocalStorage;
-	};
-	
+	};	
 })(window);
